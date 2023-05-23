@@ -1,31 +1,14 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Windsor.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Windsor.Services;
 
 namespace Windsor.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public IActionResult Index([FromServices] INameService service)
     {
-        _logger = logger;
-    }
+        var name = service.GetName();
 
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View((object)name);
     }
 }
